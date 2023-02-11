@@ -1,17 +1,22 @@
 import React from 'react';
+import Cell from './Cell';
 
 function Board() {
+	const handleClick = () => {
+		console.log('tapped');
+	};
+
 	return (
 		<div className='board' id='board'>
-			<div className='cell' data-cell></div>
-			<div className='cell' data-cell></div>
-			<div className='cell' data-cell></div>
-			<div className='cell' data-cell></div>
-			<div className='cell' data-cell></div>
-			<div className='cell' data-cell></div>
-			<div className='cell' data-cell></div>
-			<div className='cell' data-cell></div>
-			<div className='cell' data-cell></div>
+			<Cell onClick={handleClick} />
+			<Cell onClick={handleClick} />
+			<Cell onClick={handleClick} />
+			<Cell onClick={handleClick} />
+			<Cell onClick={handleClick} />
+			<Cell onClick={handleClick} />
+			<Cell onClick={handleClick} />
+			<Cell onClick={handleClick} />
+			<Cell onClick={handleClick} />
 		</div>
 	);
 }
