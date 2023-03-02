@@ -12,6 +12,8 @@ function App() {
 	const [player, setPlayer] = useState('O');
 	//set the initial state of the result before any wins or draws
 	const [result, setResult] = useState({ winner: 'none', state: 'none' });
+	//check if someone won
+	const [winner, setWinner] = useState(false);
 
 	//when there is change in board state, call checkWin and CheckIfTie in the case of a draw
 	useEffect(() => {
@@ -29,8 +31,8 @@ function App() {
 	//if the is change in result state from none, announce the game result
 	useEffect(() => {
 		if (result.state != 'none') {
-			alert(`Game Finished! Winning Player: ${result.winner}`);
-			restartGame();
+			// alert(`Game Finished! Winning Player: ${result.winner}`);
+			setWinner(true);
 		}
 	}, [result]);
 
@@ -92,70 +94,80 @@ function App() {
 		setBoard(['', '', '', '', '', '', '', '', '']);
 		//Set first player to 'O'
 		setPlayer('O');
+		setWinner(false);
 	};
 
 	return (
 		<div className='App'>
-			{/* Add the game board  */}
-			<div className='board'>
-				<Square
-					// pass the value of the corresponding board array index
-					val={board[0]}
-					chooseSquare={() => {
-						chooseSquare(0);
-					}}
-				/>
-				<Square
-					val={board[1]}
-					chooseSquare={() => {
-						chooseSquare(1);
-					}}
-				/>
-				<Square
-					val={board[2]}
-					chooseSquare={() => {
-						chooseSquare(2);
-					}}
-				/>
-				<Square
-					// pass the value of the corresponding board array index
-					val={board[3]}
-					chooseSquare={() => {
-						chooseSquare(3);
-					}}
-				/>
-				<Square
-					val={board[4]}
-					chooseSquare={() => {
-						chooseSquare(4);
-					}}
-				/>
-				<Square
-					val={board[5]}
-					chooseSquare={() => {
-						chooseSquare(5);
-					}}
-				/>
-				<Square
-					// pass the value of the corresponding board array index
-					val={board[6]}
-					chooseSquare={() => {
-						chooseSquare(6);
-					}}
-				/>
-				<Square
-					val={board[7]}
-					chooseSquare={() => {
-						chooseSquare(7);
-					}}
-				/>
-				<Square
-					val={board[8]}
-					chooseSquare={() => {
-						chooseSquare(8);
-					}}
-				/>
-			</div>
+			{winner === false && (
+				<div className='board'>
+					<Square
+						// pass the value of the corresponding board array index
+						val={board[0]}
+						chooseSquare={() => {
+							chooseSquare(0);
+						}}
+					/>
+					<Square
+						val={board[1]}
+						chooseSquare={() => {
+							chooseSquare(1);
+						}}
+					/>
+					<Square
+						val={board[2]}
+						chooseSquare={() => {
+							chooseSquare(2);
+						}}
+					/>
+					<Square
+						// pass the value of the corresponding board array index
+						val={board[3]}
+						chooseSquare={() => {
+							chooseSquare(3);
+						}}
+					/>
+					<Square
+						val={board[4]}
+						chooseSquare={() => {
+							chooseSquare(4);
+						}}
+					/>
+					<Square
+						val={board[5]}
+						chooseSquare={() => {
+							chooseSquare(5);
+						}}
+					/>
+					<Square
+						// pass the value of the corresponding board array index
+						val={board[6]}
+						chooseSquare={() => {
+							chooseSquare(6);
+						}}
+					/>
+					<Square
+						val={board[7]}
+						chooseSquare={() => {
+							chooseSquare(7);
+						}}
+					/>
+					<Square
+						val={board[8]}
+						chooseSquare={() => {
+							chooseSquare(8);
+						}}
+					/>
+				</div>
+			)}
+			{winner && (
+				<div className='winning-message'>
+					<h3>The winner is Yesaya</h3>
+					<button id='restartButton' onClick={restartGame}>
+						Restart
+					</button>
+				</div>
+			)}
 		</div>
 	);
 }
