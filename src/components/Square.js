@@ -1,7 +1,7 @@
 import React from 'react';
 import '../App.css';
 
-function Cell({ val, chooseSquare }) {
+function Square({ val, chooseSquare }) {
 	return (
 		<div className='cell' data-cell onClick={chooseSquare}>
 			{val}
@@ -9,4 +9,4 @@ function Cell({ val, chooseSquare }) {
 	);
 }
 
-export default Cell;
+export default Square;
