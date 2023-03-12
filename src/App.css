@@ -33,6 +33,8 @@ body {
 	align-items: center;
 	position: relative;
 	cursor: pointer;
+	font-size: 2rem;
+	font-weight: bolder;
 }
 
 .cell:first-child,
@@ -120,17 +122,18 @@ body {
 	left: 0;
 	right: 0;
 	bottom: 0;
+	padding-top: 10%;
 	background-color: white;
 	justify-content: center;
 	align-items: center;
 	color: black;
-	font-size: 5rem;
+	font-size: 2rem;
 	flex-direction: column;
 	text-align: center;
 }
 
 .winning-message button {
-	font-size: 3rem;
+	font-size: 1.5rem;
 	background-color: white;
 	border: solid 1px black;
 	padding: 0.25em 0.5em;
@@ -142,8 +145,4 @@ body {
 	background-color: black;
 	border-color: white;
 	color: white;
-}
-
-.winning-message.show {
-	display: flex;
 }

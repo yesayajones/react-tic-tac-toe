@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Square from './components/Square';
 //import the pattern on winning combination
 import { Patterns } from './Patterns';
+import Board from './components/Board';
 
 function App() {
 	//create an empty board set array
@@ -14,6 +15,8 @@ function App() {
 	const [result, setResult] = useState({ winner: 'none', state: 'none' });
 	//check if someone won
 	const [winner, setWinner] = useState(false);
+	//winning message
+	const [message, setMessage] = useState('');
 
 	//when there is change in board state, call checkWin and CheckIfTie in the case of a draw
 	useEffect(() => {
@@ -32,6 +35,7 @@ function App() {
 	useEffect(() => {
 		if (result.state != 'none') {
 			// alert(`Game Finished! Winning Player: ${result.winner}`);
+			setMessage(`Game Finished! Winning Player: ${result.winner}`);
 			setWinner(true);
 		}
 	}, [result]);
@@ -42,8 +46,17 @@ function App() {
 	const chooseSquare = (square) => {
 		setBoard(
 			board.map((val, idx) => {
-				if (idx == square && val == '') {
-					return player;
+				if (idx == square) {
+					if (val == '') {
+						return player;
+					} else {
+						setPlayer((prev) => {
+							if (prev === 'X') return 'O';
+							else {
+								return 'X';
+							}
+						});
+					}
 				}
 
 				return val;
@@ -99,70 +112,10 @@ function App() {
 
 	return (
 		<div className='App'>
-			{winner === false && (
-				<div className='board'>
-					<Square
-						// pass the value of the corresponding board array index
-						val={board[0]}
-						chooseSquare={() => {
-							chooseSquare(0);
-						}}
-					/>
-					<Square
-						val={board[1]}
-						chooseSquare={() => {
-							chooseSquare(1);
-						}}
-					/>
-					<Square
-						val={board[2]}
-						chooseSquare={() => {
-							chooseSquare(2);
-						}}
-					/>
-					<Square
-						// pass the value of the corresponding board array index
-						val={board[3]}
-						chooseSquare={() => {
-							chooseSquare(3);
-						}}
-					/>
-					<Square
-						val={board[4]}
-						chooseSquare={() => {
-							chooseSquare(4);
-						}}
-					/>
-					<Square
-						val={board[5]}
-						chooseSquare={() => {
-							chooseSquare(5);
-						}}
-					/>
-					<Square
-						// pass the value of the corresponding board array index
-						val={board[6]}
-						chooseSquare={() => {
-							chooseSquare(6);
-						}}
-					/>
-					<Square
-						val={board[7]}
-						chooseSquare={() => {
-							chooseSquare(7);
-						}}
-					/>
-					<Square
-						val={board[8]}
-						chooseSquare={() => {
-							chooseSquare(8);
-						}}
-					/>
-				</div>
-			)}
+			<Board board={board} chooseSquare={chooseSquare} />
 			{winner && (
 				<div className='winning-message'>
-					<h3>The winner is Yesaya</h3>
+					<h3>{message}</h3>
 					<button id='restartButton' onClick={restartGame}>
 						Restart
 					</button>
