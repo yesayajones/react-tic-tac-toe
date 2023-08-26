@@ -1,10 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
-import { useState, useEffect } from 'react';
-//import the square component
-import Square from './components/Square';
-//import the pattern on winning combination
-import { Patterns } from './Patterns';
 import Board from './components/Board';
 
 function App() {
@@ -63,52 +58,74 @@ function App() {
 				return val;
 			})
 		);
+
+		//Send a POST request to the server with the square value as the request body
+		fetch('/move', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ square: square }),
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				//Update the game state based on the response from the server
+				setBoard(data.board);
+				setPlayer(data.player);
+				setResult(data.result);
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+			});
 	};
 
 	//Check if there is a winner
 	const checkWin = () => {
-		Patterns.forEach((currPattern) => {
-			const firstPlayer = board[currPattern[0]];
-			//if no move has been made, don't check for winner
-			if (firstPlayer == '') return;
-			let foundWinningPattern = true;
-			//If any of the squares player is not part of the winning combination, then no winner yet.
-			currPattern.forEach((idx) => {
-				if (board[idx] != firstPlayer) {
-					foundWinningPattern = false;
+		//Send a GET request to the server to check if there is a winner
+		fetch('/check-win')
+			.then((response) => response.json())
+			.then((data) => {
+				//If a winner is found, update the Result's winnin player and state to won.
+				if (data.winner != 'none') {
+					setResult({ winner: data.winner, state: 'Won' });
 				}
+			})
+			.catch((error) => {
+				console.error('Error:', error);
 			});
-
-			//If a winner is found, update the Result's winninng player and state to won.
-			if (foundWinningPattern) {
-				setResult({ winner: player, state: 'Won' });
-			}
-		});
 	};
 
 	//Check if there is a draw
 	const checkIfTie = () => {
-		let filled = true;
-		//If any of the squares is empty, then there can not be a draw
-		board.forEach((square) => {
-			if (square == '') {
-				filled = false;
-			}
-		});
-
-		//If all the squares are filled and no winner then its a draw
-		if (filled) {
-			setResult({ winner: 'No One', state: 'Tie' });
-		}
+		//Send a GET request to the server to check if there is a draw
+		fetch('/check-tie')
+			.then((response) => response.json())
+			.then((data) => {
+				//If all the squares are filled and no winner then its a draw
+				if (data.state == 'Tie') {
+					setResult({ winner: 'No One', state: 'Tie' });
+				}
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+			});
 	};
 
 	//Restart game on win or draw
 	const restartGame = () => {
-		//Reset the board to the initial empty state
-		setBoard(['', '', '', '', '', '', '', '', '']);
-		//Set first player to 'O'
-		setPlayer('O');
-		setWinner(false);
+		//Send a GET request to the server to restart the game
+		fetch('/restart')
+			.then((response) => response.json())
+			.then((data) => {
+				//Reset the board to the initial empty state
+				setBoard(data.board);
+				//Set first player to 'O'
+				setPlayer('O');
+				setWinner(false);
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+			});
 	};
 
 	return (
